@@ -15,11 +15,10 @@ on:
         required: true
         default: '3.10'
         options:
-        - '3.9'
-        - '3.8'
+        - 3.9
+        - 3.8
       environment:
         description: 'Environment to run tests against'
-        type: environment
         required: true
         default: 'dev'
         options:
