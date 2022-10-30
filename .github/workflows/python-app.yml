@@ -12,13 +12,15 @@ on:
     inputs:
       python-version:
         description: 'Python 3 version for testing lambda'
+        type: choice
         required: true
         default: '3.10'
         options:
-        - 3.9
-        - 3.8
+        - '3.9'
+        - '3.8'
       environment:
         description: 'Environment to run tests against'
+        type: choice
         required: true
         default: 'dev'
         options:
