@@ -2,15 +2,15 @@ name: debug
 
 on:
   workflow_dispatch:
-    inputs:
-      nvm-version:
-        description: 'NVM version'
-        required: true
-        default: 0.38.0
-      nvm-path:
-        description: 'Path to NVM directory'
-        required: false
-        default: ~/.nvm
+    # inputs:
+    #   nvm-version:
+    #     description: 'NVM version'
+    #     required: true
+    #     default: 0.38.0
+    #   nvm-path:
+    #     description: 'Path to NVM directory'
+    #     required: false
+    #     default: ~/.nvm
 
 jobs:
   debug:
@@ -27,12 +27,18 @@ jobs:
           ssh-key: ${{ secrets.GHA_ID_RSA }}
           path: ./.github/gha
 
-      - name: Install nvm
-        uses: ./.github/gha/nvm-sh
+      - name: Get PR labels from GitHub context
+        id: pr-labels
+        uses: ./.github/gha/pr-labels
         with:
-          nvm-version: ${{ github.event.inputs.nvm-version }}
-          nvm-path: ${{ github.event.inputs.nvm-path }}
-        continue-on-error: true
+          github-context: ${{ toJSON(github) }}
+
+      # - name: Install nvm
+      #   uses: ./.github/gha/nvm-sh
+      #   with:
+      #     nvm-version: ${{ github.event.inputs.nvm-version }}
+      #     nvm-path: ${{ github.event.inputs.nvm-path }}
+      #   continue-on-error: true
 
       - name: Debug environment
         run: |
@@ -40,12 +46,6 @@ jobs:
           echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
           env|sort
           echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-          ls -al ./.github/gha
-          echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-          ls -al ~ || echo $?
-          ls -al ~/.nvm || echo $?
-          echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-          nvm -v || echo $?
           echo "====================================="
 
       - name: Dump GitHub context
