@@ -63,4 +63,3 @@ def lambda_handler(event, context):
         shipper.add(new_log)
 
     shipper.flush()
-    
