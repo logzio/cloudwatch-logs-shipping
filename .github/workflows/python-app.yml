@@ -16,6 +16,7 @@ on:
         required: true
         default: '3.10'
         options:
+        - '3.10'
         - '3.9'
         - '3.8'
       environment:
@@ -24,6 +25,7 @@ on:
         required: true
         default: 'dev'
         options:
+        - dev
         - staging
         - prod
       # tmp-path:
