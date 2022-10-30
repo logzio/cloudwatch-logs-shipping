@@ -53,7 +53,7 @@ jobs:
         echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         env|sort
         echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        uname -a && ls -al && pwd
+        uname -a && ls -al && ls -al .. && pip list && pwd
         echo "====================================="
 
     - name: Set up Python
@@ -67,7 +67,7 @@ jobs:
         echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         env|sort
         echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        uname -a && ls -al && pwd
+        uname -a && ls -al && ls -al .. && pip list && pwd
         echo "====================================="
 
     - name: Install dependencies
@@ -86,6 +86,7 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+      continue-on-error: true
 
     - name: Debug environment 3
       run: |
@@ -93,5 +94,5 @@ jobs:
         echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         env|sort
         echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        uname -a && ls -al && pwd
+        uname -a && ls -al && ls -al .. && pip list && pwd
         echo "====================================="
