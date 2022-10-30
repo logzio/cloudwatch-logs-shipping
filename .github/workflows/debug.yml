@@ -1,0 +1,74 @@
+name: debug
+
+on:
+  workflow_dispatch:
+    inputs:
+      nvm-version:
+        description: 'NVM version'
+        required: true
+        default: 0.38.0
+      nvm-path:
+        description: 'Path to NVM directory'
+        required: false
+        default: ~/.nvm
+
+jobs:
+  debug:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Checkout actions repository
+        uses: actions/checkout@v2
+        with:
+          repository: logzio/gha
+          ref: master
+          token: ${{ secrets.GHA_REPO_TOKEN }}
+          path: ./.github/gha
+
+      - name: Install nvm
+        uses: ./.github/gha/nvm-sh
+        with:
+          nvm-version: ${{ github.event.inputs.nvm-version }}
+          nvm-path: ${{ github.event.inputs.nvm-path }}
+        continue-on-error: true
+
+      - name: Debug environment
+        run: |
+          echo "Environment - ${{ github.workflow }}"
+          echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+          env|sort
+          echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+          ls -al ./.github/gha
+          echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+          ls -al ~ || echo $?
+          ls -al ~/.nvm || echo $?
+          echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+          nvm -v || echo $?
+          echo "====================================="
+
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJSON(job) }}
+        run: echo "$JOB_CONTEXT"
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJSON(steps) }}
+        run: echo "$STEPS_CONTEXT"
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJSON(runner) }}
+        run: echo "$RUNNER_CONTEXT"
+      - name: Dump strategy context
+        env:
+          STRATEGY_CONTEXT: ${{ toJSON(strategy) }}
+        run: echo "$STRATEGY_CONTEXT"
+      - name: Dump matrix context
+        env:
+          MATRIX_CONTEXT: ${{ toJSON(matrix) }}
+        run: echo "$MATRIX_CONTEXT"
