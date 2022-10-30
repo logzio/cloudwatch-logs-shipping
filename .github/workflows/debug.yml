@@ -24,7 +24,7 @@ jobs:
         with:
           repository: logzio/gha
           ref: master
-          token: ${{ secrets.GHA_REPO_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           path: ./.github/gha
 
       - name: Install nvm
