@@ -15,6 +15,12 @@ on:
 jobs:
   debug:
     runs-on: ubuntu-22.04
+    
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./lambda
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -27,11 +33,6 @@ jobs:
           ssh-key: ${{ secrets.GHA_ID_RSA }}
           path: ./.github/gha
 
-      - name: Get PR labels from GitHub context
-        id: pr-labels
-        uses: ./.github/gha/pr-labels
-        with:
-          github-context: ${{ toJSON(github) }}
 
       # - name: Install nvm
       #   uses: ./.github/gha/nvm-sh
